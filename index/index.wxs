@@ -1,0 +1,63 @@
+function move(dt, instance, wdith, currDir) {
+    var dir = currDir || 0;
+    var currDt = 0;
+    if (dir === -1) { // 根据方向确定位移距离增量方式
+        currDt = -(wdith / 2) + dt
+    } else if (dir === 0) {
+        currDt = dt
+    } else {
+        currDt = (wdith / 2) + dt
+    };
+    instance.setStyle({ // 设置滑块组件style
+        transform: 'translate3d(' + currDt + 'px, 0, 0)',
+        '-webkit-transform': 'translate3d(' + currDt + 'px, 0, 0)'
+    })
+}
+
+// 根据方向判断最终位置
+function releaseAction(instance, width, dir) {
+    var curr = 0;
+    instance.addClass('ani');
+    if (dir === -1) {
+        curr = -(width / 2);
+    } else if (dir === 0) {
+        curr = 0;
+    } else {
+        curr = (width / 2);
+    };
+    instance.setStyle({
+        transform: 'translate3d(' + curr + 'px, 0, 0)',
+        '-webkit-transform': 'translate3d(' + curr + 'px, 0, 0)'
+    });
+}
+
+module.exports = {
+    // ownerInstance page 实例
+    handleTouchStart: function (e, ownerInstance) {
+        var instance = e.instance; // 当前触发事件的组件实例
+        var state = ownerInstance.getState(); // 将临时变量保存在这里
+        state.width = instance.getDataset().slidewidth; // 保存滑块宽度
+        state.x = e.changedTouches[0].clientX; // 获取touchstart x坐标并保存
+        instance.removeClass('ani'); // 先移除过渡class
+    },
+    handleTouchMove: function (e, ownerInstance) {
+        var x = e.changedTouches[0].clientX;
+        var state = ownerInstance.getState();
+        var instance = e.instance;
+        move(x - state.x, instance, state.width, state.dir); // 跟手移动
+    },
+    handleTouchEnd: function (e, ownerInstance) {
+        var x = e.changedTouches[0].clientX;
+        var state = ownerInstance.getState();
+        var instance = e.instance;
+        var dt = x - state.x;
+        var currDir = state.dir || 0; //松手时确定方向 -1左 0中 1右
+        if (dt <= -50 && (currDir === 1 || currDir === 0)) {
+            currDir = currDir - 1;
+        } else if (dt >= 50 && (currDir === -1 || currDir === 0)) {
+            currDir = currDir + 1;
+        };
+        state.dir = currDir; // 保存方向
+        releaseAction(instance, state.width, currDir); // 松手过渡
+    }
+}

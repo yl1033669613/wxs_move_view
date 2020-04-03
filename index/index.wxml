@@ -1,0 +1,8 @@
+<wxs module="moveSlide" src="./index.wxs"></wxs>
+
+<view class="intro">
+    <!-- 需要跟手操作的view -->
+    <view class="slide-box" data-slidewidth="{{width}}" bindtouchstart="{{moveSlide.handleTouchStart}}" bindtouchmove="{{moveSlide.handleTouchMove}}" bindtouchend="{{moveSlide.handleTouchEnd}}">
+        <view class="inner-text">这是一个slide划块，能左右跟手拖动，松手会有一个过渡</view>
+    </view>
+</view>

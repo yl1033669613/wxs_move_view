@@ -1,0 +1,26 @@
+.intro {
+  margin: 0;
+  text-align: center;
+  padding: 30rpx;
+  height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.slide-box {
+  height: 100%;
+  width: 100%;
+  border-radius: 20rpx;
+  box-shadow: 0 0 20rpx rgba(0, 0, 0, .3);
+  box-sizing: border-box;
+  padding: 150rpx 100rpx;
+  color: #fff;
+  background: rgb(158, 158, 158);
+}
+
+.ani {
+  transition-property: transform;
+  transition-duration: 0.45s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
